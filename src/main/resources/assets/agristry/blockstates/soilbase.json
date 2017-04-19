@@ -1,0 +1,94 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "agristry:soilbase",
+    "textures": {
+      "particle": "agristry:blocks/soil/soil_top",
+      "top": "agristry:blocks/soil/soil_top",
+      "side": "agristry:blocks/soil/soil_side",
+      "bottom": "agristry:blocks/soil/soil_bottom"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "glowstone": {
+      "0": {},
+      "1": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_1"
+        }
+      },
+      "2": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_2"
+        }
+      },
+      "3": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_3"
+        }
+      },
+      "4": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_4"
+        }
+      },
+      "5": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_5"
+        }
+      },
+      "6": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_6"
+        }
+      },
+      "7": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_7"
+        }
+      },
+      "8": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_8"
+        }
+      },
+      "9": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_9"
+        }
+      },
+      "10": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_10"
+        }
+      },
+      "11": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_11"
+        }
+      },
+      "12": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_12"
+        }
+      },
+      "13": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_13"
+        }
+      },
+      "14": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_14"
+        }
+      },
+      "15": {
+        "textures": {
+          "top": "agristry:blocks/soil/soil_top_glowing_15"
+        }
+      }
+    }
+  }
+}

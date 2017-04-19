@@ -1,5 +1,10 @@
 .gradle
 build/
+run/
+libs/
+.idea/
+eclipse/
+classes/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -12,3 +17,10 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+CREDITS-fml.txt
+LICENSE-new.txt
+README.txt
+Paulscode SoundSystem CodecIBXM License.txt
+Paulscode IBXM Library License.txt
+forge-1.11.2-13.20.0.2282-changelog.txt
+MinecraftForge-Credits.txt
