@@ -1,7 +1,6 @@
 package bloodworkxgaming.agristry.Blocks;
 
 import bloodworkxgaming.agristry.Agristry;
-import bloodworkxgaming.agristry.Blocks.growthpot.TEGrowthPot;
 import mcjty.lib.compat.CompatBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
