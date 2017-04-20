@@ -4,11 +4,49 @@
     "custom": { "flip-v": true },
     "model": "agristry:growthpot.obj",
     "textures": {
-      "#None": "agristry:blocks/soil/soil_bottom"
+      "#Texture": "agristry:blocks/growthpot_texture"
     }
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{}]
+    "inventory": [{
+      "transform": {
+        "firstperson_righthand": {
+          "translation": [0, 0, 0],
+          "rotation": [ { "y": 0}, {"x": 0}, {"z": 0} ],
+          "scale": 0.4
+        },
+        "firstperson_lefthand": {
+          "translation": [0, 0, 0],
+          "rotation": [ { "y": 0}, {"x": 0}, {"z": 0} ],
+          "scale": 0.4
+        },
+        "thirdperson_lefthand": {
+          "translation": [0, -0.25, 0],
+          "rotation": [{"x": 0}, { "y": 0},  {"z": 0} ],
+          "scale": 0.4
+        },
+        "thirdperson_righthand": {
+          "translation": [0, -0.25, 0],
+          "rotation": [{"x": 0}, { "y": 0},  {"z": 0} ],
+          "scale": 0.4
+        },
+        "gui": {
+          "translation": [0, -0.25, 0],
+          "scale": 0.45,
+          "rotation": [ {"x": 0}, { "y": 30}, {"z": 0} ]
+        },
+        "ground": {
+          "translation": [0, 0, 0],
+          "scale": 0.45,
+          "rotation": [ {"x": 0}, { "y": 30}, {"z": 0} ]
+        },
+        "fixed": {
+          "translation": [0, -0.25, 0],
+          "scale": 0.45,
+          "rotation": [ {"x": 0}, { "y": 30}, {"z": 0} ]
+        }
+      }
+    }]
   }
 }
