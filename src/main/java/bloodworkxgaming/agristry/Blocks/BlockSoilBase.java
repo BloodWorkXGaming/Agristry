@@ -18,8 +18,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -39,12 +41,12 @@ import java.util.Random;
 /**
  * Created by Jonas on 18.04.2017.
  */
-public class SoilBase extends CompatBlock {
+public class BlockSoilBase extends CompatBlock {
 
     public static PropertyInteger GLOWSTONE = PropertyInteger.create("glowstone", 0, 15);
 
     AxisAlignedBB Hitbox = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
-    public SoilBase(){
+    public BlockSoilBase(){
         super(Material.GROUND);
         setRegistryName("soilbase");
         setUnlocalizedName(Agristry.MODID + ".soilbase");
@@ -64,6 +66,13 @@ public class SoilBase extends CompatBlock {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 
+    public void initCrafting(){
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.soilBase), new Object[]{
+                ".F.",
+                "FDF",
+                ".F.", 'D', Blocks.DIRT, 'F', new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())
+        });
+    }
 
     @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {

@@ -1,6 +1,7 @@
 package bloodworkxgaming.agristry.Blocks.growthpot;
 
 import bloodworkxgaming.agristry.Agristry;
+import bloodworkxgaming.agristry.ModBlocks;
 import mcjty.lib.compat.CompatBlock;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -38,8 +39,6 @@ public class BlockGrowthPot extends CompatBlock implements ITileEntityProvider{
         GameRegistry.registerTileEntity(TEGrowthPot.class, "agristry_growthpot");
         setHardness(2);
 
-
-
     }
 
     @SideOnly(Side.CLIENT)
@@ -59,12 +58,20 @@ public class BlockGrowthPot extends CompatBlock implements ITileEntityProvider{
         return hitBox;
     }
 
-    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return hitBox;
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        worldIn.setBlockState(pos.up(), ModBlocks.blockGrowthPotHelper.getDefaultState());
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        IBlockState helperBlock = worldIn.getBlockState(pos.up());
+        if (helperBlock.getBlock() instanceof BlockGrowthPotHelper){
+            worldIn.destroyBlock(pos.up(), false);
+        }
+    }
+
+    //region >> Rendering options for the Block
     @Override
     public boolean isFullyOpaque(IBlockState state) {
         return false;
@@ -89,5 +96,8 @@ public class BlockGrowthPot extends CompatBlock implements ITileEntityProvider{
     public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
         return false;
     }
+    //endregion
+
+
 }
 
