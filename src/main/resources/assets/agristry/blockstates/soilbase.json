@@ -7,10 +7,11 @@
       "top": "agristry:blocks/soil/soil_top",
       "side": "agristry:blocks/soil/soil_side",
       "bottom": "agristry:blocks/soil/soil_bottom"
-    }
+    },
+    "uvlock": false
   },
   "variants": {
-    "normal": [{}],
+    "normal": [],
     "inventory": [{}],
     "glowstone": {
       "0": {},

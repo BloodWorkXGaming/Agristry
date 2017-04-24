@@ -1,6 +1,7 @@
 package bloodworkxgaming.agristry;
 
 import bloodworkxgaming.agristry.Proxy.CommonProxy;
+import mezz.jei.api.IModRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Agristry
 {
     public static final String MODID = "agristry";
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "0.1.0";
 
     @Mod.Instance
     public static Agristry instance;

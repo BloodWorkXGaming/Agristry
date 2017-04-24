@@ -14,7 +14,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -41,7 +40,7 @@ import java.util.Random;
 /**
  * Created by Jonas on 18.04.2017.
  */
-public class BlockSoilBase extends CompatBlock {
+public class BlockSoilBase extends CompatBlock{
 
     public static PropertyInteger GLOWSTONE = PropertyInteger.create("glowstone", 0, 15);
 
@@ -67,11 +66,11 @@ public class BlockSoilBase extends CompatBlock {
     }
 
     public void initCrafting(){
-        GameRegistry.addRecipe(new ItemStack(ModBlocks.soilBase), new Object[]{
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.soilBase),
                 ".F.",
                 "FDF",
                 ".F.", 'D', Blocks.DIRT, 'F', new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())
-        });
+        );
     }
 
     @Override

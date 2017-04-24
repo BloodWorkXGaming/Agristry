@@ -1,0 +1,94 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "agristry:soilbase",
+    "textures": {
+      "particle": "agristry:blocks/soil/soil_top",
+      "top": "agristry:blocks/soil/soil_top",
+      "side": "agristry:blocks/soil/soil_side",
+      "bottom": "agristry:blocks/soil/soil_bottom"
+    },
+    "uvlock": false
+  },
+  "variants": {
+    "normal": [{"y":0},{"y":90},{"y":180},{"y":270}],
+    "inventory": [{}],
+    "glowstone=0": [{"y":0},{"y":90},{"y":180},{"y":270}],
+    "glowstone=1": [
+      {"y":0, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_1"}},
+      {"y":90, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_1"}},
+      {"y":180, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_1"}},
+      {"y":270, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_1"}}],
+    "glowstone=2": [
+      {"y":0, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_2"}},
+      {"y":90, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_2"}},
+      {"y":180, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_2"}},
+      {"y":270, "textures": {"top": "agristry:blocks/soil/soil_top_glowing_2"}}],
+    "glowstone=3": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=4": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=5": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=6": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=7": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=8": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=9": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=10": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=11": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=12": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=13": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=14": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}],
+    "glowstone=15": [
+      {"y":0},
+      {"y":90},
+      {"y":180},
+      {"y":270}]
+
+  }
+}
