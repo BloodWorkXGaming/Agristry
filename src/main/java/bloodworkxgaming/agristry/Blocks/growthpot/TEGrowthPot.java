@@ -20,6 +20,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,15 @@ public class TEGrowthPot extends TileEntity implements ITickable{
     };
 
 
+    public List<ItemStack> getItemsInInventory(){
+        List<ItemStack> items = new ArrayList<>();
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            items.add(itemStackHandler.getStackInSlot(i));
+        }
+
+        return items;
+    }
+
     int counter = 0;
     @Override
     public void update() {
@@ -45,7 +55,7 @@ public class TEGrowthPot extends TileEntity implements ITickable{
             if (counter >= 10) {
                 counter = 0;
                 ItemStack seeds = itemStackHandler.getStackInSlot(0);
-                if (!ItemStackTools.isEmpty(seeds)) {
+                if (ItemStackTools.isValid(seeds)) {
                     if (seeds.getItem() instanceof IPlantable) {
                         IBlockState plant = ((IPlantable) seeds.getItem()).getPlant(world, pos);
                         // System.out.println(plant.getBlock().getLocalizedName());
@@ -75,9 +85,9 @@ public class TEGrowthPot extends TileEntity implements ITickable{
                 ItemStack potSlot = itemStackHandler.getStackInSlot(i);
 
                 if (drops.get(l).getItem() == itemStackHandler.getStackInSlot(0).getItem() && !removedSeed){
-                    System.out.println("Count before: " + drops.get(l).getCount());
+                    // System.out.println("Count before: " + drops.get(l).getCount());
                     drops.get(l).setCount(drops.get(l).getCount() - 1);
-                    System.out.println("Count after: " + drops.get(l).getCount());
+                    // System.out.println("Count after: " + drops.get(l).getCount());
                     removedSeed = true;
 
                 }
@@ -140,6 +150,7 @@ public class TEGrowthPot extends TileEntity implements ITickable{
         }
         return super.getCapability(capability, facing);
     }
+
 
 
 }

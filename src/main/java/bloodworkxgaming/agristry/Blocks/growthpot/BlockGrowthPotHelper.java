@@ -103,6 +103,7 @@ public class BlockGrowthPotHelper extends CompatBlock {
         if (mainBlock.getBlock() instanceof BlockGrowthPot){
             worldIn.destroyBlock(pos.down(), true);
         }
+
     }
 
 

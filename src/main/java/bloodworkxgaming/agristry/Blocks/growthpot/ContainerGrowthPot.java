@@ -1,5 +1,7 @@
 package bloodworkxgaming.agristry.Blocks.growthpot;
 
+import bloodworkxgaming.agristry.Blocks.ItemSlots.SlotOutput;
+import bloodworkxgaming.agristry.Blocks.ItemSlots.SlotSeeds;
 import mcjty.lib.compat.CompatItemTool;
 import mcjty.lib.tools.ItemStackTools;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +57,7 @@ public class ContainerGrowthPot extends net.minecraft.inventory.Container {
         int slotIndex = 0;
 
         // Main Slot / Seed slot (0)
-        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 82, 32));
+        addSlotToContainer(new SlotSeeds(itemHandler, slotIndex, 82, 32));
         slotIndex++;
 
         // Fuel / RFSlot (1)
@@ -64,7 +66,7 @@ public class ContainerGrowthPot extends net.minecraft.inventory.Container {
 
         // Output slots (2-4)
         for (int i = 0; i < 3; i++){
-            addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 64 + i * 18, 68));
+            addSlotToContainer(new SlotOutput(itemHandler, slotIndex, 64 + i * 18, 68));
             slotIndex++;
         }
 
@@ -73,42 +75,39 @@ public class ContainerGrowthPot extends net.minecraft.inventory.Container {
             addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 154, 14 + i * 18));
             slotIndex++;
         }
-
-
-
-
-
     }
+
+    
 
 
     @Nullable
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
-        ItemStack itemStack = ItemStackTools.getEmptyStack();
+        ItemStack previous = ItemStackTools.getEmptyStack();
 
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemStack = itemstack1.copy();
+            ItemStack current = slot.getStack();
+            previous = current.copy();
 
             if (index < TEGrowthPot.SIZE) {
-                if (!this.mergeItemStack(itemstack1, TEGrowthPot.SIZE, this.inventorySlots.size(), true)) {
+                if (!this.mergeItemStack(current, TEGrowthPot.SIZE, this.inventorySlots.size(), true)) {
                     return ItemStackTools.getEmptyStack();
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, TEGrowthPot.SIZE, false)) {
+            } else if (!this.mergeItemStack(current, 0, TEGrowthPot.SIZE, false)) {
                 return ItemStackTools.getEmptyStack();
             }
 
-            if (ItemStackTools.isEmpty(itemstack1)) {
+            if (ItemStackTools.isEmpty(current) || current.getCount() == 0) {
                 slot.putStack(ItemStackTools.getEmptyStack());
             } else {
                 slot.onSlotChanged();
             }
         }
 
-        return itemStack;
+        return previous;
     }
 
 
