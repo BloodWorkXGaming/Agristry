@@ -13,7 +13,7 @@ public class ItemMetaBase extends ItemBase {
     protected String[] itemArray;
 
     public ItemMetaBase(String name, String[] array){
-        super(name);
+        // super(name);
         setHasSubtypes(true);
         this.itemArray = array;
 
@@ -33,5 +33,8 @@ public class ItemMetaBase extends ItemBase {
             subItems.add(new ItemStack(itemIn, 1, i));
         }
     }
+
+
+
 }
 

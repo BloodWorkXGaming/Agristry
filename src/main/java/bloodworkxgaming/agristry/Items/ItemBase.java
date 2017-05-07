@@ -1,30 +1,31 @@
 package bloodworkxgaming.agristry.Items;
 
-import bloodworkxgaming.agristry.Agristry;
 import mcjty.lib.compat.CompatItem;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+
 
 /**
  * Created by Jonas on 26.04.2017.
  */
 public class ItemBase extends CompatItem {
 
-    public ItemBase(String name){
-        setRegistryName(name);
-        setUnlocalizedName(Agristry.MODID + "." + name);
-        GameRegistry.register(this);
+    public ItemBase(){
+
         this.setNoRepair();
 
-
     }
 
-    @SideOnly(Side.CLIENT)
-    public void initModel(){
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
     }
+
+    @Override
+    public String toString()
+    {
+        String regName = getRegistryName() != null ? getRegistryName().getResourcePath() : "unregistered";
+        return getClass().getSimpleName() + "[" + regName  + "]";
+    }
+
 
 }

@@ -35,6 +35,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -176,7 +178,7 @@ public class BlockSoilBase extends CompatBlock{
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {GLOWSTONE});
+        return new BlockStateContainer(this, GLOWSTONE);
     }
 
     @Override
@@ -188,5 +190,14 @@ public class BlockSoilBase extends CompatBlock{
         }else {
             return false;
         }
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        List<ItemStack> drops =  new ArrayList<>();
+        drops.add(new ItemStack(Items.GLOWSTONE_DUST, getGlowstoneAmount(state)));
+        drops.add(new ItemStack(ModBlocks.soilBase, 1));
+
+        return drops;
     }
 }

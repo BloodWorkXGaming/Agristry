@@ -4,11 +4,9 @@ import bloodworkxgaming.agristry.Agristry;
 import bloodworkxgaming.agristry.ModBlocks;
 import mcjty.lib.compat.CompatBlock;
 import mcjty.lib.tools.ItemStackTools;
-import mezz.jei.api.IModRegistry;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,15 +20,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jonas on 20.04.2017.
@@ -84,7 +79,7 @@ public class BlockGrowthPot extends CompatBlock implements ITileEntityProvider{
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        worldIn.setBlockState(pos.up(), ModBlocks.blockGrowthPotHelper.getDefaultState());
+        worldIn.setBlockState(pos.up(), ModBlocks.GrowthPotHelper.getDefaultState());
     }
 
     @Override

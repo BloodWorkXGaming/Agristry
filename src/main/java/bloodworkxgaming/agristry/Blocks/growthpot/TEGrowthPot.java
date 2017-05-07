@@ -1,5 +1,6 @@
 package bloodworkxgaming.agristry.Blocks.growthpot;
 
+import bloodworkxgaming.agristry.HelperClasses.GenericTileEntity;
 import com.google.common.collect.ImmutableMap;
 import javafx.beans.property.IntegerProperty;
 import mcjty.lib.tools.ItemStackTools;
@@ -8,6 +9,9 @@ import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -26,10 +30,17 @@ import java.util.List;
 /**
  * Created by Jonas on 20.04.2017.
  */
-public class TEGrowthPot extends TileEntity implements ITickable{
+public class TEGrowthPot extends GenericTileEntity implements ITickable{
 
     public static final int SIZE = 9;
 
+    // [CONFIG]
+    private static final int GROWTHS_SPEED = 10;
+    public static final int FERTILIZER_PER_ITEM = 100;
+    public static final int FERTILIZER_MAX = 1000;
+    public static final int FERTILIZER_PER_GROWTH = 25;
+
+    // Data Vars
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE){
 
         @Override
@@ -37,6 +48,8 @@ public class TEGrowthPot extends TileEntity implements ITickable{
             TEGrowthPot.this.markDirty();
         }
     };
+    private int fertilizerAmount = 0;
+
 
 
     public List<ItemStack> getItemsInInventory(){
@@ -48,12 +61,22 @@ public class TEGrowthPot extends TileEntity implements ITickable{
         return items;
     }
 
-    int counter = 0;
+    private int counter = 0;
+
     @Override
     public void update() {
         if (!world.isRemote) {
-            if (counter >= 10) {
-                counter = 0;
+
+            /*
+            // remove fertilizer every second
+            if (counter % 20 == 0 && fertilizerAmount > (FERTILIZER_PER_GROWTH / GROWTHS_SPEED) * 20){
+                fertilizerAmount -= (FERTILIZER_PER_GROWTH / GROWTHS_SPEED) * 20;
+                markDirtyClient();
+            } */
+
+
+            // calculation of the plant growing
+            if (counter % GROWTHS_SPEED == 0 && checkCanWork()) {
                 ItemStack seeds = itemStackHandler.getStackInSlot(0);
                 if (ItemStackTools.isValid(seeds)) {
                     if (seeds.getItem() instanceof IPlantable) {
@@ -61,48 +84,73 @@ public class TEGrowthPot extends TileEntity implements ITickable{
                         // System.out.println(plant.getBlock().getLocalizedName());
                         Block plantBlock = plant.getBlock();
                         if (plantBlock instanceof BlockCrops){
-                                List<ItemStack> drops = plantBlock.getDrops(world, null, (((BlockCrops) plantBlock).withAge(((BlockCrops) plantBlock).getMaxAge())), 0);
 
-
+                            List<ItemStack> drops = plantBlock.getDrops(world, null, (((BlockCrops) plantBlock).withAge(((BlockCrops) plantBlock).getMaxAge())), 0);
                             // Add drops to the output
                             addOutputDrops(drops);
+                            fertilizerAmount -= FERTILIZER_PER_GROWTH;
+
                         }
                     }
                 }
             }
+
+            // loading the fertilizer in the slot
+            if (fertilizerAmount <= FERTILIZER_MAX - FERTILIZER_PER_ITEM && itemStackHandler.getStackInSlot(1).getCount() > 0) {
+                // TODO: Fix when adding own type of fertilizer/compost
+                ItemStack fertilizer =  itemStackHandler.getStackInSlot(1);
+                if (fertilizer.getItem() == Items.DYE && fertilizer.getItemDamage() == 15){
+                    fertilizer.setCount(fertilizer.getCount() - 1);
+                    fertilizerAmount += FERTILIZER_PER_ITEM;
+                    markDirtyClient();
+                }
+            }
+
+
             counter++;
         }
     }
 
-    public void addOutputDrops(List<ItemStack> drops){
+    private boolean checkCanWork(){
+        if (fertilizerAmount < FERTILIZER_PER_GROWTH) return false;
+        // Output slots are 2-4
+        boolean slotHasSpace = false;
+        for (int i = 2; i <= 4; i++) {
+            ItemStack item = itemStackHandler.getStackInSlot(i);
+            if (item.getCount() <= item.getItem().getItemStackLimit(item)){
+                slotHasSpace = true;
+            }
+        }
+        return slotHasSpace;
+    }
+
+    private void addOutputDrops(List<ItemStack> drops){
 
         boolean removedSeed = false;
-        for (int l = 0; l < drops.size(); l++) {
+        for (ItemStack drop : drops) {
 
             // Output slots are 2-4
-            for (int i = 2; i <= 4; i++){
+            for (int i = 2; i <= 4; i++) {
 
                 ItemStack potSlot = itemStackHandler.getStackInSlot(i);
 
-                if (drops.get(l).getItem() == itemStackHandler.getStackInSlot(0).getItem() && !removedSeed){
-                    // System.out.println("Count before: " + drops.get(l).getCount());
-                    drops.get(l).setCount(drops.get(l).getCount() - 1);
-                    // System.out.println("Count after: " + drops.get(l).getCount());
+                if (drop.getItem() == itemStackHandler.getStackInSlot(0).getItem() && !removedSeed) {
+                    drop.setCount(drop.getCount() - 1);
                     removedSeed = true;
 
                 }
 
-                if (!ItemStackTools.isEmpty(drops.get(l)) && (ItemStackTools.isEmpty(potSlot) || ( potSlot.getItem().equals(drops.get(l).getItem())) && potSlot.getCount() < potSlot.getItem().getItemStackLimit(potSlot))){
+                if (!ItemStackTools.isEmpty(drop) && (ItemStackTools.isEmpty(potSlot) || (potSlot.getItem().equals(drop.getItem())) && potSlot.getCount() < potSlot.getItem().getItemStackLimit(potSlot))) {
                     // System.out.println("Trying to output: " + drops.get(l).getItem().getUnlocalizedName() + " Count: " + drops.get(l).getCount());
 
-                    if (potSlot.getCount() + drops.get(l).getCount() > potSlot.getItem().getItemStackLimit(potSlot)){
-                        itemStackHandler.setStackInSlot(i, new ItemStack(drops.get(l).getItem(), potSlot.getItem().getItemStackLimit(potSlot)));
-                        drops.get(l).setCount(potSlot.getItem().getItemStackLimit(potSlot) - potSlot.getCount());
+                    if (potSlot.getCount() + drop.getCount() > potSlot.getItem().getItemStackLimit(potSlot)) {
+                        itemStackHandler.setStackInSlot(i, new ItemStack(drop.getItem(), potSlot.getItem().getItemStackLimit(potSlot)));
+                        drop.setCount(potSlot.getItem().getItemStackLimit(potSlot) - potSlot.getCount());
                         continue;
                     }
 
-                    itemStackHandler.setStackInSlot(i, new ItemStack(drops.get(l).getItem(), drops.get(l).getCount() + itemStackHandler.getStackInSlot(i).getCount()));
-                    ItemStackTools.makeEmpty(drops.get(l));
+                    itemStackHandler.setStackInSlot(i, new ItemStack(drop.getItem(), drop.getCount() + itemStackHandler.getStackInSlot(i).getCount()));
+                    ItemStackTools.makeEmpty(drop);
 
 
                 }
@@ -119,12 +167,15 @@ public class TEGrowthPot extends TileEntity implements ITickable{
         if (compound.hasKey("items")){
             itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         }
+        fertilizerAmount = compound.getInteger("fertilizer");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
+        compound.setInteger("fertilizer", fertilizerAmount);
+
         return compound;
     }
 
@@ -151,6 +202,8 @@ public class TEGrowthPot extends TileEntity implements ITickable{
         return super.getCapability(capability, facing);
     }
 
-
+    public int getFertilizerAmount(){
+        return fertilizerAmount;
+    }
 
 }

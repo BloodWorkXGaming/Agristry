@@ -3,10 +3,6 @@ package bloodworkxgaming.agristry.Blocks.growthpot;
 import bloodworkxgaming.agristry.Agristry;
 import bloodworkxgaming.agristry.ModBlocks;
 import mcjty.lib.compat.CompatBlock;
-import mcjty.lib.jei.JeiCompatTools;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -114,7 +110,7 @@ public class BlockGrowthPotHelper extends CompatBlock {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(ModBlocks.blockGrowthPot);
+        return new ItemStack(ModBlocks.GrowthPot);
     }
 
     @Override
@@ -130,6 +126,6 @@ public class BlockGrowthPotHelper extends CompatBlock {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        return ModBlocks.blockGrowthPot.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, side, hitX, hitY +1, hitZ );
+        return ModBlocks.GrowthPot.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, side, hitX, hitY +1, hitZ );
     }
 }

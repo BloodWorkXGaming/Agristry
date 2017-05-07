@@ -2,33 +2,42 @@ package bloodworkxgaming.agristry.Blocks.growthpot;
 
 import bloodworkxgaming.agristry.Blocks.ItemSlots.SlotOutput;
 import bloodworkxgaming.agristry.Blocks.ItemSlots.SlotSeeds;
-import mcjty.lib.compat.CompatItemTool;
 import mcjty.lib.tools.ItemStackTools;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 
 /**
  * Created by Jonas on 23.04.2017.
  */
-public class ContainerGrowthPot extends net.minecraft.inventory.Container {
+public class ContainerGrowthPot extends Container {
 
     private TEGrowthPot te;
+
+    /** Using these will make transferStackInSlot easier to understand and implement
+     * INV_START is the index of the first slot in the Player's Inventory, so our
+     * InventoryItem's number of slots (e.g. 5 slots is array indices 0-4, so start at 5)
+     * Notice how we don't have to remember how many slots we made? We can just use
+     * InventoryItem.INV_SIZE and if we ever change it, the Container updates automatically. */
+    private static final int INV_START = TEGrowthPot.SIZE, INV_END = INV_START+26,
+            HOTBAR_START = INV_END+1, HOTBAR_END = HOTBAR_START+8;
+
+
 
     public ContainerGrowthPot(IInventory playerInventory, TEGrowthPot te){
         this.te = te;
 
 
-        addPlayerSlots(playerInventory);
         addOwnSlots();
+        addPlayerSlots(playerInventory);
     }
 
 
@@ -92,12 +101,29 @@ public class ContainerGrowthPot extends net.minecraft.inventory.Container {
             ItemStack current = slot.getStack();
             previous = current.copy();
 
-            if (index < TEGrowthPot.SIZE) {
-                if (!this.mergeItemStack(current, TEGrowthPot.SIZE, this.inventorySlots.size(), true)) {
+            // If item is in our custom Inventory or armor slot
+            if (index < INV_START) {
+
+                // try to place in player inventory / action bar
+                if (!this.mergeItemStack(current, INV_START, HOTBAR_END+1, true)) {
+
                     return ItemStackTools.getEmptyStack();
                 }
-            } else if (!this.mergeItemStack(current, 0, TEGrowthPot.SIZE, false)) {
-                return ItemStackTools.getEmptyStack();
+
+                // slot.onSlotChanged();
+
+            }
+            // Item is in inventory / hotbar, try to place in custom inventory or armor slots
+            else {
+                if (current.getItem() instanceof IPlantable) {
+                    if (!this.mergeItemStack(current, 0, 1, false)){
+                        return ItemStackTools.getEmptyStack();
+                    }
+                }
+
+                if (!this.mergeItemStack(current, 0, TEGrowthPot.SIZE, false)) {
+                    return ItemStackTools.getEmptyStack();
+                }
             }
 
             if (ItemStackTools.isEmpty(current) || current.getCount() == 0) {
@@ -105,6 +131,13 @@ public class ContainerGrowthPot extends net.minecraft.inventory.Container {
             } else {
                 slot.onSlotChanged();
             }
+
+            if (current.getCount() == previous.getCount()){
+                return ItemStackTools.getEmptyStack();
+            }
+
+            slot.onTake(playerIn, current);
+
         }
 
         return previous;
@@ -114,5 +147,9 @@ public class ContainerGrowthPot extends net.minecraft.inventory.Container {
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
         return te.canInteractWith(playerIn);
+    }
+
+    public TEGrowthPot getTE(){
+        return te;
     }
 }
