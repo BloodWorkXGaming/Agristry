@@ -25,5 +25,4 @@ public abstract class GuiBase extends GuiContainer{
     protected int getBarScaled(int pixels, int count, int max) {
         return count > 0 && max > 0 ? count * pixels / max : 0;
     }
-
 }

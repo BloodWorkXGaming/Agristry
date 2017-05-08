@@ -89,7 +89,7 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
                             // Add drops to the output
                             addOutputDrops(drops);
                             fertilizerAmount -= FERTILIZER_PER_GROWTH;
-
+                            markDirtyClient();
                         }
                     }
                 }
@@ -117,7 +117,7 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
         boolean slotHasSpace = false;
         for (int i = 2; i <= 4; i++) {
             ItemStack item = itemStackHandler.getStackInSlot(i);
-            if (item.getCount() <= item.getItem().getItemStackLimit(item)){
+            if (item.getCount() < item.getItem().getItemStackLimit(item)){
                 slotHasSpace = true;
             }
         }

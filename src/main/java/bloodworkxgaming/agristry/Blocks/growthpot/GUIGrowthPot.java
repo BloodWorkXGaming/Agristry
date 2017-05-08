@@ -3,6 +3,7 @@ package bloodworkxgaming.agristry.Blocks.growthpot;
 import bloodworkxgaming.agristry.Agristry;
 import bloodworkxgaming.agristry.HelperClasses.GuiBase;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
@@ -41,7 +42,7 @@ public class GUIGrowthPot extends GuiBase{
 
         //fuel
         if(mouseX >= 12+x && mouseX <= 24+x && mouseY >= 23+y && mouseY <= 61+y){
-            String[] text = {this.te.getFertilizerAmount() + "/" + te.FERTILIZER_MAX + " Fertilizer"};
+            String[] text = {this.te.getFertilizerAmount() + "/" + TEGrowthPot.FERTILIZER_MAX + " Fertilizer"};
             List<String> tooltip = Arrays.asList(text);
             drawHoveringText(tooltip, mouseX - x, mouseY - y, fontRenderer);
         }
@@ -49,9 +50,11 @@ public class GUIGrowthPot extends GuiBase{
 
     }
 
+    int counter = 0;
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 
+        counter++;
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
         int x = (this.width - this.xSize) / 2;
@@ -62,9 +65,10 @@ public class GUIGrowthPot extends GuiBase{
 
         if (te.getFertilizerAmount() > 0){
             int k = this.getBarScaled(50, te.getFertilizerAmount(), TEGrowthPot.FERTILIZER_MAX);
-            // Agristry.logger.info("k: " + k);
+            // Agristry.logger.info("y: " + ((double)te.getFertilizerAmount() / (double)TEGrowthPot.FERTILIZER_MAX));
 
-            drawRect(x+ 12, y + 23, 24, 61, 16777215);
+
+            drawRect(x + 12, (int)(y + 23 + (38 * (1 - (double)te.getFertilizerAmount() / (double)TEGrowthPot.FERTILIZER_MAX))), x + 24, y + 61, 0xFF673104);
 
         }
 
