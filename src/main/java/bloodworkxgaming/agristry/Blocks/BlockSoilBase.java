@@ -1,14 +1,13 @@
 package bloodworkxgaming.agristry.Blocks;
 
 import bloodworkxgaming.agristry.Agristry;
+import bloodworkxgaming.agristry.Config.MainConfig;
 import bloodworkxgaming.agristry.ModBlocks;
 import mcjty.lib.compat.CompatBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -85,15 +84,16 @@ public class BlockSoilBase extends CompatBlock{
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         // System.out.println("Ayy mate, I got ticked at pos: " + pos);
+
         Block blockUp = worldIn.getBlockState(pos.up()).getBlock();
-        if ( blockUp instanceof IGrowable && rand.nextInt(30) == 0){
+        if ( blockUp instanceof IGrowable && rand.nextInt(MainConfig.Blocks.soilBase.TICK_CHANCE) == 0){
             ((IGrowable)blockUp).grow(worldIn, rand, pos.up(), worldIn.getBlockState(pos.up()));
         }
     }
 
     @Override
     public int tickRate(World worldIn) {
-        return 1000;
+        return MainConfig.Blocks.soilBase.TICK_RATE;
     }
 
     @SideOnly(Side.CLIENT)

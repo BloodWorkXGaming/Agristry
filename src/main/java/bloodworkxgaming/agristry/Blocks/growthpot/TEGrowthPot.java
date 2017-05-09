@@ -1,5 +1,6 @@
 package bloodworkxgaming.agristry.Blocks.growthpot;
 
+import bloodworkxgaming.agristry.Config.MainConfig;
 import bloodworkxgaming.agristry.HelperClasses.GenericTileEntity;
 import com.google.common.collect.ImmutableMap;
 import javafx.beans.property.IntegerProperty;
@@ -34,11 +35,6 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
 
     public static final int SIZE = 9;
 
-    // [CONFIG]
-    private static final int GROWTHS_SPEED = 10;
-    public static final int FERTILIZER_PER_ITEM = 100;
-    public static final int FERTILIZER_MAX = 1000;
-    public static final int FERTILIZER_PER_GROWTH = 25;
 
     // Data Vars
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE){
@@ -76,7 +72,7 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
 
 
             // calculation of the plant growing
-            if (counter % GROWTHS_SPEED == 0 && checkCanWork()) {
+            if (counter % MainConfig.Blocks.growthPot.GROWTHS_SPEED  == 0 && checkCanWork()) {
                 ItemStack seeds = itemStackHandler.getStackInSlot(0);
                 if (ItemStackTools.isValid(seeds)) {
                     if (seeds.getItem() instanceof IPlantable) {
@@ -88,7 +84,7 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
                             List<ItemStack> drops = plantBlock.getDrops(world, null, (((BlockCrops) plantBlock).withAge(((BlockCrops) plantBlock).getMaxAge())), 0);
                             // Add drops to the output
                             addOutputDrops(drops);
-                            fertilizerAmount -= FERTILIZER_PER_GROWTH;
+                            fertilizerAmount -= MainConfig.Blocks.growthPot.FERTILIZER_PER_GROWTH;
                             markDirtyClient();
                         }
                     }
@@ -96,12 +92,12 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
             }
 
             // loading the fertilizer in the slot
-            if (fertilizerAmount <= FERTILIZER_MAX - FERTILIZER_PER_ITEM && itemStackHandler.getStackInSlot(1).getCount() > 0) {
+            if (fertilizerAmount <= MainConfig.Blocks.growthPot.FERTILIZER_MAX - MainConfig.Blocks.growthPot.FERTILIZER_PER_ITEM && itemStackHandler.getStackInSlot(1).getCount() > 0) {
                 // TODO: Fix when adding own type of fertilizer/compost
                 ItemStack fertilizer =  itemStackHandler.getStackInSlot(1);
                 if (fertilizer.getItem() == Items.DYE && fertilizer.getItemDamage() == 15){
                     fertilizer.setCount(fertilizer.getCount() - 1);
-                    fertilizerAmount += FERTILIZER_PER_ITEM;
+                    fertilizerAmount += MainConfig.Blocks.growthPot.FERTILIZER_PER_ITEM;
                     markDirtyClient();
                 }
             }
@@ -112,7 +108,7 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
     }
 
     private boolean checkCanWork(){
-        if (fertilizerAmount < FERTILIZER_PER_GROWTH) return false;
+        if (fertilizerAmount < MainConfig.Blocks.growthPot.FERTILIZER_PER_GROWTH) return false;
         // Output slots are 2-4
         boolean slotHasSpace = false;
         for (int i = 2; i <= 4; i++) {
