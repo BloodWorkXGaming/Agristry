@@ -1,16 +1,20 @@
 package bloodworkxgaming.agristry.Blocks.growthpot;
 
+import bloodworkxgaming.agristry.Agristry;
 import bloodworkxgaming.agristry.Config.MainConfig;
 import bloodworkxgaming.agristry.HelperClasses.GenericTileEntity;
 import com.google.common.collect.ImmutableMap;
 import javafx.beans.property.IntegerProperty;
 import mcjty.lib.tools.ItemStackTools;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +27,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -31,10 +36,9 @@ import java.util.List;
 /**
  * Created by Jonas on 20.04.2017.
  */
-public class TEGrowthPot extends GenericTileEntity implements ITickable{
+public class TEGrowthPot extends GenericTileEntity implements ITickable, ISidedInventory{
 
     public static final int SIZE = 9;
-
 
     // Data Vars
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE){
@@ -92,11 +96,11 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
             }
 
             // loading the fertilizer in the slot
-            if (fertilizerAmount <= MainConfig.Blocks.growthPot.FERTILIZER_MAX - MainConfig.Blocks.growthPot.FERTILIZER_PER_ITEM && itemStackHandler.getStackInSlot(1).getCount() > 0) {
+            if (fertilizerAmount <= MainConfig.Blocks.growthPot.FERTILIZER_MAX - MainConfig.Blocks.growthPot.FERTILIZER_PER_ITEM && ItemStackTools.getStackSize(itemStackHandler.getStackInSlot(1)) > 0) {
                 // TODO: Fix when adding own type of fertilizer/compost
                 ItemStack fertilizer =  itemStackHandler.getStackInSlot(1);
                 if (fertilizer.getItem() == Items.DYE && fertilizer.getItemDamage() == 15){
-                    fertilizer.setCount(fertilizer.getCount() - 1);
+                    fertilizer.splitStack(1);
                     fertilizerAmount += MainConfig.Blocks.growthPot.FERTILIZER_PER_ITEM;
                     markDirtyClient();
                 }
@@ -113,7 +117,7 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
         boolean slotHasSpace = false;
         for (int i = 2; i <= 4; i++) {
             ItemStack item = itemStackHandler.getStackInSlot(i);
-            if (item.getCount() < item.getItem().getItemStackLimit(item)){
+            if (ItemStackTools.getStackSize(item) < item.getItem().getItemStackLimit(item)){
                 slotHasSpace = true;
             }
         }
@@ -131,21 +135,21 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
                 ItemStack potSlot = itemStackHandler.getStackInSlot(i);
 
                 if (drop.getItem() == itemStackHandler.getStackInSlot(0).getItem() && !removedSeed) {
-                    drop.setCount(drop.getCount() - 1);
+                    drop.splitStack(1);
                     removedSeed = true;
 
                 }
 
-                if (!ItemStackTools.isEmpty(drop) && (ItemStackTools.isEmpty(potSlot) || (potSlot.getItem().equals(drop.getItem())) && potSlot.getCount() < potSlot.getItem().getItemStackLimit(potSlot))) {
+                if (!ItemStackTools.isEmpty(drop) && (ItemStackTools.isEmpty(potSlot) || (potSlot.getItem().equals(drop.getItem())) && ItemStackTools.getStackSize(potSlot) < potSlot.getItem().getItemStackLimit(potSlot))) {
                     // System.out.println("Trying to output: " + drops.get(l).getItem().getUnlocalizedName() + " Count: " + drops.get(l).getCount());
 
-                    if (potSlot.getCount() + drop.getCount() > potSlot.getItem().getItemStackLimit(potSlot)) {
+                    if (ItemStackTools.getStackSize(potSlot) + ItemStackTools.getStackSize(drop) > potSlot.getItem().getItemStackLimit(potSlot)) {
                         itemStackHandler.setStackInSlot(i, new ItemStack(drop.getItem(), potSlot.getItem().getItemStackLimit(potSlot)));
-                        drop.setCount(potSlot.getItem().getItemStackLimit(potSlot) - potSlot.getCount());
+                        ItemStackTools.setStackSize(drop, potSlot.getItem().getItemStackLimit(potSlot) - ItemStackTools.getStackSize(potSlot));
                         continue;
                     }
 
-                    itemStackHandler.setStackInSlot(i, new ItemStack(drop.getItem(), drop.getCount() + itemStackHandler.getStackInSlot(i).getCount()));
+                    itemStackHandler.setStackInSlot(i, new ItemStack(drop.getItem(), ItemStackTools.getStackSize(drop) + ItemStackTools.getStackSize(itemStackHandler.getStackInSlot(i))));
                     ItemStackTools.makeEmpty(drop);
 
 
@@ -198,8 +202,114 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable{
         return super.getCapability(capability, facing);
     }
 
+
     public int getFertilizerAmount(){
         return fertilizerAmount;
     }
 
+    // Inventory
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return itemStackHandler.getStackInSlot(index);
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        itemStackHandler.setStackInSlot(index, stack);
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack s = itemStackHandler.getStackInSlot(index);
+        itemStackHandler.setStackInSlot(index, ItemStackTools.getEmptyStack());
+        return s;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+        Agristry.logger.info(player.getDisplayName() + ": Opened the inventory at " + this.getPos());
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return (stack.getItem() == Items.DYE && stack.getItemDamage() == 15) && (index == 1);
+    }
+
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return index >= 2 && index <= 4;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return SIZE;
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return new int[]{2, 3, 4};
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return (itemStackIn.getItem() == Items.DYE && itemStackIn.getItemDamage() == 15) && (index == 1);
+    }
+
+    // @Override
+    public boolean isEmpty() {
+        return ItemStackTools.isEmpty(itemStackHandler.getStackInSlot(2)) && ItemStackTools.isEmpty(itemStackHandler.getStackInSlot(3)) && ItemStackTools.isEmpty(itemStackHandler.getStackInSlot(4));
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        itemStackHandler.getStackInSlot(index).splitStack(count);
+        return itemStackHandler.getStackInSlot(index);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        //this might break stuff
+        return 0;
+    }
+
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return false;
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public String getName() {
+        return getDisplayName().toString();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
 }

@@ -4,6 +4,7 @@ import bloodworkxgaming.agristry.Blocks.ItemSlots.SlotOutput;
 import bloodworkxgaming.agristry.Blocks.ItemSlots.SlotSeeds;
 import mcjty.lib.tools.ItemStackTools;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -86,6 +87,7 @@ public class ContainerGrowthPot extends Container {
         }
     }
 
+
     
 
 
@@ -110,34 +112,37 @@ public class ContainerGrowthPot extends Container {
                     return ItemStackTools.getEmptyStack();
                 }
 
-                // slot.onSlotChanged();
+                slot.onSlotChanged();
 
             }
+
             // Item is in inventory / hotbar, try to place in custom inventory or armor slots
             else {
+
                 if (current.getItem() instanceof IPlantable) {
                     if (!this.mergeItemStack(current, 0, 1, false)){
                         return ItemStackTools.getEmptyStack();
                     }
                 }
 
+
                 if (!this.mergeItemStack(current, 0, TEGrowthPot.SIZE, false)) {
                     return ItemStackTools.getEmptyStack();
                 }
             }
 
-            if (ItemStackTools.isEmpty(current) || current.getCount() == 0) {
+            if (ItemStackTools.isEmpty(current) || ItemStackTools.getStackSize(current) == 0) {
                 slot.putStack(ItemStackTools.getEmptyStack());
             } else {
                 slot.onSlotChanged();
             }
 
-            if (current.getCount() == previous.getCount()){
+            if (ItemStackTools.getStackSize(current) == ItemStackTools.getStackSize(previous)){
                 return ItemStackTools.getEmptyStack();
             }
 
-            slot.onTake(playerIn, current);
-
+            // slot.onTake(playerIn, current);
+            slot.onSlotChanged();
         }
 
         return previous;
@@ -147,9 +152,5 @@ public class ContainerGrowthPot extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
         return te.canInteractWith(playerIn);
-    }
-
-    public TEGrowthPot getTE(){
-        return te;
     }
 }

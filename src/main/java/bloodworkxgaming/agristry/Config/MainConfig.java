@@ -14,27 +14,24 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = Agristry.MODID)
 public class MainConfig {
 
+
     @Config.Comment("Client-sided Settings, none so far")
     public static Client Client = new Client();
+
+    private static class Client{
+        // @Config.Comment("TestConfig")
+        // public int blub = 200;
+        // public String s = "Wup die du";
+    }
 
     @Config.Comment("Block related Settings")
     public static ConfigBlocks Blocks = new ConfigBlocks();
 
-
-    private static class Client{
-        @Config.Comment("TestConfig")
-        public int blub = 200;
-    }
-
-
     public static class ConfigBlocks {
 
+        //region >> GrowthPot
         @Config.Comment("GrowthPot Settings")
         public GrowthPot growthPot = new GrowthPot();
-
-        @Config.Comment("SoilBase Settings")
-        public SoilBase soilBase = new SoilBase();
-
         public class GrowthPot{
             @Config.Comment({"Ticks to wait between growth", "[range: 1-2147483647]"})
             public int GROWTHS_SPEED = 10;
@@ -45,14 +42,18 @@ public class MainConfig {
             @Config.Comment({"Fertilizer Value per Crop grown inserted", "[range: 0-2147483647]"})
             public int FERTILIZER_PER_GROWTH = 25;
         }
+        //endregion
 
+        //region >> SoilBase
+        @Config.Comment("SoilBase Settings")
+        public SoilBase soilBase = new SoilBase();
         public class SoilBase{
             @Config.Comment({"Change to grow on tick: 1/value", "[range: 1-2147483647]"})
             public int TICK_CHANCE = 30;
-
             @Config.Comment({"Wait time between ticks, lower is better", "[range: 0-2147483647]"})
             public int TICK_RATE = 10;
         }
+        //endregion
 
     }
 

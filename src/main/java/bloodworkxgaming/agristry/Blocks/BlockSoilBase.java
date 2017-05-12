@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -121,10 +122,11 @@ public class BlockSoilBase extends CompatBlock{
     }
 
 
-    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return Hitbox;
+    protected void clAddCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> list, Entity entity) {
+
+        addCollisionBoxToList(pos, entityBox, list, Hitbox);
+
     }
 
     /**
@@ -182,9 +184,9 @@ public class BlockSoilBase extends CompatBlock{
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    protected boolean clOnBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (playerIn.getHeldItemMainhand().getItem() == Items.GLOWSTONE_DUST && getGlowstoneAmount(state) < 15 && !playerIn.isSneaking()){
-            if (!playerIn.isCreative()) playerIn.getHeldItemMainhand().setCount(playerIn.getHeldItemMainhand().getCount() - 1);
+            if (!playerIn.isCreative()) playerIn.getHeldItemMainhand().splitStack(1); // setCount(playerIn.getHeldItemMainhand().getCount() - 1);
             setGlowstoneAmount(worldIn, pos, state, getGlowstoneAmount(state) + 1);
             return true;
         }else {

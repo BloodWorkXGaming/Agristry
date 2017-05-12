@@ -6,6 +6,7 @@ import mcjty.lib.compat.CompatBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -102,12 +104,6 @@ public class BlockGrowthPotHelper extends CompatBlock {
 
     }
 
-
-    @Override
-    public boolean hasCustomBreakingProgress(IBlockState state) {
-        return true;
-    }
-
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(ModBlocks.GrowthPot);
@@ -118,14 +114,13 @@ public class BlockGrowthPotHelper extends CompatBlock {
         return boundBox;
     }
 
-    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return hitBox;
+    protected void clAddCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> list, Entity entity) {
+        addCollisionBoxToList(pos, entityBox, list, hitBox);
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        return ModBlocks.GrowthPot.onBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, side, hitX, hitY +1, hitZ );
+    public boolean clOnBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        return worldIn.getBlockState(pos.down()).getBlock() == ModBlocks.GrowthPot && ModBlocks.GrowthPot.clOnBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, side, hitX, hitY + 1, hitZ);
     }
 }

@@ -4,7 +4,7 @@ package bloodworkxgaming.agristry.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+// import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.*;
@@ -40,7 +40,7 @@ public class ItemMeta extends ItemBase {
 
     }
 
-
+    /*
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         final List<Map.Entry<Integer, ItemTypeWithVariant>> types = new ArrayList<>(this.registered.entrySet());
@@ -49,7 +49,7 @@ public class ItemMeta extends ItemBase {
         for(final Map.Entry<Integer, ItemTypeWithVariant> item: types){
             subItems.add(new ItemStack(this, 1, item.getKey()));
         }
-    }
+    } */
 
     private static final class ItemTypeWithVariant{
 

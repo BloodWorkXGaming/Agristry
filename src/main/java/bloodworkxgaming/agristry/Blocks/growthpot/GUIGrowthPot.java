@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Jonas on 23.04.2017.
  */
-public class GUIGrowthPot extends GuiBase{
+public class GUIGrowthPot extends GuiBase {
 
     public static final int WIDTH = 180;
     public static final int HEIGHT = 178;
