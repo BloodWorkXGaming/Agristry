@@ -1,38 +1,23 @@
 package bloodworkxgaming.agristry.Blocks.growthpot;
 
-import bloodworkxgaming.agristry.Agristry;
 import bloodworkxgaming.agristry.Config.MainConfig;
 import bloodworkxgaming.agristry.HelperClasses.GenericTileEntity;
-import com.google.common.collect.ImmutableMap;
-import javafx.beans.property.IntegerProperty;
 import mcjty.lib.tools.ItemStackTools;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,8 +28,6 @@ import java.util.List;
  * Created by Jonas on 20.04.2017.
  */
 public class TEGrowthPot extends GenericTileEntity implements ITickable, ICapabilityProvider{
-
-    static Capability<IItemHandler> ITEM_HANDLER_CONTAINER_CAPABILITY = null;
 
 
     public static final int SIZE = 9;
@@ -107,15 +90,15 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable, ICapabi
         return items;
     }
 
-    public ItemStackHandler getItemStackHandlerInput() {
+    ItemStackHandler getItemStackHandlerInput() {
         return itemStackHandlerInput;
     }
 
-    public ItemStackHandler getItemStackHandlerOutput() {
+    ItemStackHandler getItemStackHandlerOutput() {
         return itemStackHandlerOutput;
     }
 
-    public ItemStackHandler getItemStackHandlerUpgrades() {
+    ItemStackHandler getItemStackHandlerUpgrades() {
         return itemStackHandlerUpgrades;
     }
 
@@ -163,7 +146,6 @@ public class TEGrowthPot extends GenericTileEntity implements ITickable, ICapabi
                     markDirtyClient();
                 }
             }
-
 
             counter++;
         }

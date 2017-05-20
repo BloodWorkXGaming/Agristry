@@ -39,6 +39,12 @@ repositories {
     maven { //CompatLayer
         url = "http://maven.k-4u.nl"
     }
+    /*
+    maven { //trove
+        url = "http://search.maven.org/"
+    }*/
+
+
     mavenCentral()
 }
 
@@ -48,6 +54,11 @@ dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}:api"
     // at runtime, use the full JEI jar
     runtime "mezz.jei:jei_${mc_version}:${jei_version}"
+
+    // https://mvnrepository.com/artifact/net.sf.trove4j/trove4j
+    // compile 'net.sf.trove4j:trove4j:3.0.3'
+
+
 
 }
 

@@ -1,30 +1,63 @@
 package bloodworkxgaming.agristry.Items;
 
+
+
+import io.netty.util.collection.IntObjectHashMap;
+
 import javax.annotation.Nullable;
+
 
 /**
  * Created by Jonas on 04.05.2017.
  */
 public enum EnumItemTypes {
 
-    UpgradeSpeed(1, "upgrade.speed", "bla", null);
+    UpgradeSpeed(1, "upgrade.speed", "bla", null),
+    UpgradeEfficiency(2, "upgrade.speed", "bla", null),
+    UpgradeEnergy(3, "upgrade.speed", "bla", null);
 
 
-    private int baseMetaValue;
+
+    // private static final EnumItemTypes[] META_LOOKUP = new EnumItemTypes[values().length];
+    private static final IntObjectHashMap<EnumItemTypes> META_LOOKUP = new IntObjectHashMap<>(values().length);
+    private int metaValue;
     private String unlocalizedName;
 
 
-    EnumItemTypes(final int baseMetaValue, final String unlocalizedName, final String itemModel, @Nullable Class specialBehavior){
-        this.baseMetaValue = baseMetaValue;
+    EnumItemTypes(final int metaValue, final String unlocalizedName, final String itemModel, @Nullable Class specialBehavior){
+        this.metaValue = metaValue;
         this.unlocalizedName = unlocalizedName;
     }
 
 
-    public int getBaseDamage() {
-        return this.baseMetaValue;
+    public int getMetadata() {
+        return this.metaValue;
     }
+
+    public static EnumItemTypes byMetadata(int meta)
+    {
+        if (meta < 0 || meta >= META_LOOKUP.size())
+        {
+            meta = 0;
+        }
+
+        return META_LOOKUP.get(meta);
+    }
+
 
     public String getUnlocalizedName() {
         return unlocalizedName;
     }
+
+
+
+    static
+    {
+        for (EnumItemTypes enumItemTypes : values())
+        {
+            META_LOOKUP.put(enumItemTypes.getMetadata(), enumItemTypes);
+            // META_LOOKUP[enumItemTypes.getMetadata()] = enumItemTypes;
+        }
+    }
+
 }
