@@ -4,6 +4,7 @@ import bloodworkxgaming.agristry.Agristry;
 import bloodworkxgaming.agristry.Config.MainConfig;
 import bloodworkxgaming.agristry.ModBlocks;
 import mcjty.lib.compat.CompatBlock;
+import mcjty.lib.tools.ItemStackTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -14,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -186,10 +188,20 @@ public class BlockSoilBase extends CompatBlock{
     @Override
     protected boolean clOnBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (playerIn.getHeldItemMainhand().getItem() == Items.GLOWSTONE_DUST && getGlowstoneAmount(state) < 15 && !playerIn.isSneaking()){
-            if (!playerIn.isCreative()) playerIn.getHeldItemMainhand().splitStack(1); // setCount(playerIn.getHeldItemMainhand().getCount() - 1);
-            setGlowstoneAmount(worldIn, pos, state, getGlowstoneAmount(state) + 1);
+            if (!worldIn.isRemote) {
+                if (!playerIn.isCreative())
+                    playerIn.getHeldItemMainhand().splitStack(1); // setCount(playerIn.getHeldItemMainhand().getCount() - 1);
+                setGlowstoneAmount(worldIn, pos, state, getGlowstoneAmount(state) + 1);
+            }
             return true;
-        }else {
+        }else if (ItemStackTools.isEmpty(playerIn.getHeldItemMainhand()) && getGlowstoneAmount(state) > 0 && playerIn.isSneaking()){
+            if (!worldIn.isRemote) {
+                setGlowstoneAmount(worldIn, pos, state, getGlowstoneAmount(state) - 1);
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.up().getY(), pos.getZ(), new ItemStack(Items.GLOWSTONE_DUST, 1)));
+            }
+            return true;
+        }else
+        {
             return false;
         }
     }

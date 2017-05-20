@@ -2,6 +2,7 @@ package bloodworkxgaming.agristry.JEI;
 
 import bloodworkxgaming.agristry.ModBlocks;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -22,6 +23,11 @@ public class JeiAgristryPlugin extends BlankModPlugin{
 
         registry.addDescription(new ItemStack(ModBlocks.soilBase), "jei.Agristry.desc.BlockSoilBase");
 
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        super.onRuntimeAvailable(jeiRuntime);
 
     }
 }

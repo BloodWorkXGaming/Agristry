@@ -21,9 +21,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -123,4 +125,7 @@ public class BlockGrowthPotHelper extends CompatBlock {
     public boolean clOnBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         return worldIn.getBlockState(pos.down()).getBlock() == ModBlocks.GrowthPot && ModBlocks.GrowthPot.clOnBlockActivated(worldIn, pos.down(), worldIn.getBlockState(pos.down()), playerIn, hand, side, hitX, hitY + 1, hitZ);
     }
+
+
+
 }

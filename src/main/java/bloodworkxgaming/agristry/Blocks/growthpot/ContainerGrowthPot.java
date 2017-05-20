@@ -62,27 +62,27 @@ public class ContainerGrowthPot extends Container {
     }
 
     private void addOwnSlots(){
-        IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        // IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
         int slotIndex = 0;
 
         // Main Slot / Seed slot (0)
-        addSlotToContainer(new SlotSeeds(itemHandler, slotIndex, 82, 32));
+        addSlotToContainer(new SlotSeeds(te.getItemStackHandlerInput(), 0, 82, 32));
         slotIndex++;
 
         // Fuel / RFSlot (1)
-        addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 10, 68));
+        addSlotToContainer(new SlotItemHandler(te.getItemStackHandlerInput(), 1, 10, 68));
         slotIndex++;
 
         // Output slots (2-4)
         for (int i = 0; i < 3; i++){
-            addSlotToContainer(new SlotOutput(itemHandler, slotIndex, 64 + i * 18, 68));
+            addSlotToContainer(new SlotOutput(te.getItemStackHandlerOutput(), i, 64 + i * 18, 68));
             slotIndex++;
         }
 
         // Upgrades (5 - 8)
         for (int i = 0; i < 4; i++){
-            addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, 154, 14 + i * 18));
+            addSlotToContainer(new SlotItemHandler(te.getItemStackHandlerUpgrades(), i, 154, 14 + i * 18));
             slotIndex++;
         }
     }

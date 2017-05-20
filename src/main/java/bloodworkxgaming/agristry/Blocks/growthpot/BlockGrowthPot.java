@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -89,8 +90,7 @@ public class BlockGrowthPot extends CompatBlock implements ITileEntityProvider{
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         for (ItemStack stack: getTE(worldIn, pos).getItemsInInventory()) {
             if (!ItemStackTools.isEmpty(stack) && ItemStackTools.isValid(stack)){
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack));
-
+                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
             }
         }
 
