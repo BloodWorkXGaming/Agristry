@@ -12,9 +12,10 @@ import javax.annotation.Nullable;
  */
 public enum EnumItemTypes {
 
+    Default(0, "default", "bla", null),
     UpgradeSpeed(1, "upgrade.speed", "bla", null),
-    UpgradeEfficiency(2, "upgrade.speed", "bla", null),
-    UpgradeEnergy(3, "upgrade.speed", "bla", null);
+    UpgradeEfficiency(2, "upgrade.efficiency", "bla", null),
+    UpgradeEnergy(3, "upgrade.energy", "bla", null);
 
 
 
@@ -36,7 +37,7 @@ public enum EnumItemTypes {
 
     public static EnumItemTypes byMetadata(int meta)
     {
-        if (meta < 0 || meta >= META_LOOKUP.size())
+        if (meta < 0 || meta >= values()[values().length - 1].getMetadata())
         {
             meta = 0;
         }

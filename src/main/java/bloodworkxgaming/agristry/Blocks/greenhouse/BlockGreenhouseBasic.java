@@ -39,6 +39,7 @@ public class BlockGreenhouseBasic extends CompatBlock implements ITileEntityProv
         setUnlocalizedName(Agristry.MODID + ".greenhouse_basic");
         GameRegistry.register(this);
         GameRegistry.register(new ItemBlock(this), getRegistryName());
+        GameRegistry.registerTileEntity(TEGreenhouseBasic.class, Agristry.MODID + "_greenhouse_basic");
     }
 
     @SideOnly(Side.CLIENT)

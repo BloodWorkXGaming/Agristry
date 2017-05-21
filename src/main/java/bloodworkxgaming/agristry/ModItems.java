@@ -2,6 +2,7 @@ package bloodworkxgaming.agristry;
 
 import bloodworkxgaming.agristry.Items.ItemMeta;
 import bloodworkxgaming.agristry.Items.ItemMetaBase;
+import bloodworkxgaming.agristry.Items.DebugItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -13,6 +14,7 @@ public class ModItems {
     // public  static FirstItem firstItem;
     public static ItemMeta itemMeta;
     public static ItemMetaBase itemMetaBase;
+    public static DebugItem testItem;
 
 
     public static void init(){
@@ -20,6 +22,7 @@ public class ModItems {
         // firstItem = new FirstItem();
         itemMeta = new ItemMeta();
         itemMetaBase = new ItemMetaBase();
+        testItem = new DebugItem();
 
     }
 
@@ -28,5 +31,6 @@ public class ModItems {
     public static void initModels(){
         // simpleTexturedItem.initModel();
         itemMetaBase.initModel();
+        testItem.initModel();
     }
 }

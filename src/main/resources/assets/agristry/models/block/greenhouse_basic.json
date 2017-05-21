@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "agristry:blocks/soil/soil_top_glowing_15",
+    "down": "agristry:blocks/soil/soil_top",
+    "up": "agristry:blocks/soil/soil_top",
+    "east": "agristry:blocks/soil/soil_top",
+    "west": "agristry:blocks/soil/soil_top",
+    "north": "agristry:blocks/soil/soil_top_glowing_15",
+    "south": "agristry:blocks/soil/soil_top"
+
+  }
+}
